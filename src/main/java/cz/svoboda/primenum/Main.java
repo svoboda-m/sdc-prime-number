@@ -1,7 +1,6 @@
 package cz.svoboda.primenum;
 
 import cz.svoboda.primenum.app.Application;
-
 import java.io.IOException;
 
 public class Main {
