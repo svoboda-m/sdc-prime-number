@@ -24,7 +24,6 @@ public class Application {
      * It opens a file via arguments, checks if a cell is convertible to integer,
      * then checks if a number is prime.
      * The output is shown in a console using Logger.
-     * @throws IOException
      */
     public void run() {
         PrimeNumber primeNumber = new PrimeNumber();
