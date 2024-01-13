@@ -26,36 +26,38 @@ public class Application {
      * The output is shown in a console using Logger.
      * @throws IOException
      */
-    public void run() throws IOException{
+    public void run() {
         PrimeNumber primeNumber = new PrimeNumber();
         NumProcessor numProcessor = new NumProcessor();
         int number;
 
-        FileInputStream inputStream = new FileInputStream(args[0]);
-        BufferedInputStream bufferedStream = new BufferedInputStream(inputStream);
+        try (FileInputStream inputStream = new FileInputStream(args[0]);
+             BufferedInputStream bufferedStream = new BufferedInputStream(inputStream)
+        ) {
+            XSSFWorkbook workbook = new XSSFWorkbook(bufferedStream);
+            XSSFSheet sheet = workbook.getSheetAt(0);
 
-        XSSFWorkbook workbook = new XSSFWorkbook(bufferedStream);
-        XSSFSheet sheet = workbook.getSheetAt(0);
+            for (Row row : sheet) {
+                Cell cell = row.getCell(1);
 
-        for (Row row : sheet) {
-            Cell cell = row.getCell(1);
+                if (cell != null) {
+                    try {
+                        number = numProcessor.process(cell);
+                    } catch (NumberFormatException e) {
+                        continue;
+                    }
 
-            if (cell != null) {
-
-                try {
-                    number = numProcessor.process(cell);
-                } catch (NumberFormatException e) {
-                    continue;
-                }
-
-                if (number > 0) {
-                    if (primeNumber.isPrime(number)) {
-                        logger.info("Prime number found: " + number);
+                    if (number > 0) {
+                        if (primeNumber.isPrime(number)) {
+                            logger.info("Prime number found: " + number);
+                        }
                     }
                 }
             }
+        } catch (FileNotFoundException e) {
+            logger.error("File not found.\n" + e.getMessage());
+        } catch (IOException e) {
+            logger.error("A problem occurred while processing the file.\n" + e.getMessage());
         }
-
-        inputStream.close();
     }
 }
