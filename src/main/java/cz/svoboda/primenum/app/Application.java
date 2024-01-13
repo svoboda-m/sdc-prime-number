@@ -21,7 +21,6 @@ public class Application {
         PrimeNumber primeNumber = new PrimeNumber();
         NumProcessor numProcessor = new NumProcessor();
         int number;
-        logger.info(args[0]);
 
         FileInputStream inputStream = new FileInputStream(args[0]);
         BufferedInputStream bufferedStream = new BufferedInputStream(inputStream);
@@ -33,19 +32,18 @@ public class Application {
             Cell cell = row.getCell(1);
 
             if (cell != null) {
-                System.out.println("-------------");
-                System.out.println("raw input: " + cell);
 
-                number = numProcessor.process(cell);
+                try {
+                    number = numProcessor.process(cell);
+                } catch (NumberFormatException e) {
+                    continue;
+                }
 
-                System.out.println("clean input: " + number);
                 if (number > 0) {
                     if (primeNumber.isPrime(number)) {
                         logger.info("Prime number found: " + number);
                     }
                 }
-
-                System.out.println();
             }
         }
 
