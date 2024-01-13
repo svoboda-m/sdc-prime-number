@@ -1,6 +1,12 @@
 package cz.svoboda.primenum.app;
 
 public class PrimeNumber {
+
+    /**
+     * This method checks, if a number is a prime number.
+     * @param n input number
+     * @return boolean
+     */
     public boolean isPrime(int n) {
         if (n <= 1) {
             return false;
